@@ -28,14 +28,16 @@ async function convert() {
 
 
 function writeNewCSV() {
-  /**
-   * * DLRG Manager:        DLRG Seminare
-   *  Frauen = 1          = 1
-   *  Männer = 2          = 0
-   */
+
 
   const data = members.map(member => ({
-    'DLRG-Manager-Id': member["managerId"],
+    /**
+     * * DLRG Manager:        DLRG Seminare
+     *  Frauen = 1          = 1
+     *  Männer = 2          = 0
+     */
+
+    'DLRG-Manager-Id': "",
     'Mitgliedsausweisnummer': "",
     'Vorname': member["firstname"],
     'Nachname': member["lastname"],
@@ -54,9 +56,17 @@ function writeNewCSV() {
     'Ort Unternehmen': "",
     'Strasse Unternehmen': "",
     'Mitgliedsnummer Unternehmen': ""
+
   }));
 
-  const newCSV = Papa.unparse(data, {
+
+  const fileCount = Math.ceil(data.length / 100);
+
+  const first = data.slice(0, 98);
+
+  console.log(fileCount)
+
+  const newCSV = Papa.unparse(first, {
     delimiter: ";",
   });
 
