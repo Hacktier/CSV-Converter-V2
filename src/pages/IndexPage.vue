@@ -27,7 +27,7 @@ async function convert() {
 }
 
 
-function writeNewCSV() {
+async function writeNewCSV() {
 
 
   const data = members.map(member => ({
@@ -42,7 +42,7 @@ function writeNewCSV() {
     'Vorname': member["firstname"],
     'Nachname': member["lastname"],
     'Geburtsdatum': member["birthDate"],
-    'Geschlecht': member["gender"]== 1 ? member["gender"] : 0,
+    'Geschlecht': member["gender"] == 1 ? member["gender"] : 0,
     'Strasse': member["street"],
     'PLZ': member["zipCode"],
     'Wohnort': member["city"],
@@ -60,32 +60,46 @@ function writeNewCSV() {
   }));
 
 
-  const fileCount = Math.ceil(data.length / 100);
+  const fileCount = Math.ceil(data.length / 99);
+  const files = [];
 
-  const first = data.slice(0, 98);
+  for (let i = 0; i < fileCount; i++) {
+    const chunk = data.slice(i * 99, (i + 1) * 99)
 
-  console.log(fileCount)
+    files.push(Papa.unparse(chunk, {
+      delimiter: ";",
+    }));
+  }
 
-  const newCSV = Papa.unparse(first, {
-    delimiter: ";",
-  });
 
-  download(newCSV)
+  for (let i = 0; i < files.length; i++) {
+    console.log(i)
+
+    await download(files[i]);
+
+    // await new Promise(f => setTimeout(f, 5000));
+  }
+
 }
+async function download(newCSV: string): Promise<void> {
+  return new Promise((resolve) => {
+    let datetime = new Date();
+    let filename = 'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv';
+    let element = document.createElement('a');
 
-function download(newCSV: string) {
-  let filename = 'test.csv';
-  let element = document.createElement('a');
-  element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(newCSV));
-  element.setAttribute('download', filename);
+    element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(newCSV));
+    element.setAttribute('download', filename);
 
-  element.style.display = 'none';
-  document.body.appendChild(element);
+    element.style.display = 'none';
+    document.body.appendChild(element);
 
-  element.click();
-  document.body.removeChild(element);
+    element.click();
+    document.body.removeChild(element);
 
-  file.value = null;
+    file.value = null;
+
+    return resolve();
+  })
 }
 
 function readCSV() {
@@ -134,5 +148,3 @@ function readCSV() {
 }
 
 </script>
-
-
