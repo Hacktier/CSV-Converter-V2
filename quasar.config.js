@@ -27,7 +27,8 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: [
-      'app.css'
+      'app.css',
+      '../../node_modules/bootstrap/dist/css/bootstrap.css'
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -190,7 +191,7 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'quasar-project'
+        appId: 'dlrg-csv-converter'
       }
     },
 

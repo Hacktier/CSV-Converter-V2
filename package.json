@@ -12,13 +12,12 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
-    "convert-csv-to-json": "^2.0.0",
-    "csv-parser": "^3.0.0",
+    "@quasar/icongenie": "^3.1.1",
+    "bootstrap": "^5.3.2",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "papaparse": "^5.4.1",
-    "primevue": "^3.35.0",
     "quasar": "^2.6.0",
-    "vue": "^3.0.0",
+    "vue": "^3.3.4",
     "vue-router": "^4.0.0"
   },
   "devDependencies": {

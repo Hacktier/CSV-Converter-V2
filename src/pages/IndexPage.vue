@@ -1,9 +1,12 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <input ref="fileInput" type="file" @change="handleFileChange"/>
-    <button @click="convert">Convert</button>
-  </q-page>
+    <div class="position-absolute top-50 start-50 translate-middle row">
+      <input class="form-control col-9" ref="fileInput" type="file" @change="handleFileChange"/>
+      <div class="col-3">
+        <button class="btn btn-primary  ms-2" @click="convert">Convert</button>
+      </div>
+    </div>
 </template>
+
 
 <script setup lang="ts">
 import {ref} from 'vue'
