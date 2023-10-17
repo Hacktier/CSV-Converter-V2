@@ -1,1 +1,11 @@
 /* app global css */
+div {
+  width: 600px;
+}
+.fullscreen {
+  width: 100%;
+}
+.settingsButton {
+  width:30px;
+  z-index:3001
+}

@@ -12,10 +12,12 @@ function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
-    width: 1000,
-    height: 600,
+    icon: path.resolve(__dirname, 'icons/logo.png'), // tray icon
+    width: 800,
+    height: 500,
     useContentSize: true,
+    resizable: false,
+    center: true,
     webPreferences: {
       contextIsolation: true,
       // More info: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/electron-preload-script
