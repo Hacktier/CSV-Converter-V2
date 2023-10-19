@@ -51,6 +51,14 @@
 <!--               @click="toggleDrawer"-->
 <!--        />-->
       </q-list>
+      <footer class="row p-2">
+        <div class="col">
+          Version 2.0.0
+        </div>
+        <div class="col copyright">
+          &copy; Markus Kapp
+        </div>
+      </footer>
     </q-drawer>
 
     <q-page-container>
