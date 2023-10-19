@@ -40,25 +40,32 @@
               elevated
               bordered
     >
-      <q-list>
-        <h2 class="m-2">Einstellungen</h2>
-<!--        <q-btn style="width:30px" class="position-absolute top-0 end-0"-->
-<!--               flat-->
-<!--               unelevated-->
-<!--               icon="settings"-->
-<!--               size="m"-->
-<!--               aria-label="Menu"-->
-<!--               @click="toggleDrawer"-->
-<!--        />-->
+      <q-list class="m-2">
+        <h2>Einstellungen</h2>
+        <!--        <q-btn style="width:30px" class="position-absolute top-0 end-0"-->
+        <!--               flat-->
+        <!--               unelevated-->
+        <!--               icon="settings"-->
+        <!--               size="m"-->
+        <!--               aria-label="Menu"-->
+        <!--               @click="toggleDrawer"-->
+        <!--        />-->
+
+
+        <div class="form-check form-switch m-2 mt-4">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+          <label class="form-check-label" for="flexSwitchCheckChecked">DLRG-Manager ID</label>
+        </div>
+        <div class="input-group mt-4">
+          <span class="input-group-text" id="inputGroup-sizing-default">OG Nummer</span>
+          <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        </div>
+
+        <footer class="row">
+          <div class="col ms-4 p-0">Version 2.0.0</div>
+          <div class="col copyright p-0 me-4">&copy; Markus Kapp </div>
+        </footer>
       </q-list>
-      <footer class="row p-2">
-        <div class="col">
-          Version 2.0.0
-        </div>
-        <div class="col copyright">
-          &copy; Markus Kapp
-        </div>
-      </footer>
     </q-drawer>
 
     <q-page-container>

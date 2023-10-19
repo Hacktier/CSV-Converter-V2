@@ -14,6 +14,10 @@ npm install
 quasar dev
 ```
 
+### Start the app in electron development mode (hot-code reloading, error reporting, etc.)
+```bash
+quasar dev -m electron
+```
 
 ### Build the app for production
 ```bash
