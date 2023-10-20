@@ -1,10 +1,10 @@
 <template>
-    <div class="fileInput position-absolute top-50 start-50 translate-middle row">
-      <input class="form-control col-9" ref="fileInput" type="file" @change="handleFileChange"/>
-      <div class="col-3">
-        <button class="btn btn-primary  ms-2" @click="convert">Convert</button>
-      </div>
+  <div class="fileInput position-absolute top-50 start-50 translate-middle row">
+    <input class="form-control col-9" ref="fileInput" type="file" @change="handleFileChange"/>
+    <div class="col-3">
+      <button class="btn btn-primary  ms-2" @click="convert">Convert</button>
     </div>
+  </div>
 </template>
 
 
@@ -12,6 +12,7 @@
 import {ref} from 'vue'
 import Papa from 'papaparse'
 import {Member} from "src/Member";
+import {exportFile, runSequentialPromises} from "quasar";
 
 const fileInput = ref<HTMLInputElement>()
 const file = ref<File | null>()
@@ -75,15 +76,63 @@ async function writeNewCSV() {
   }
 
 
+  let promises = [];
+
   for (let i = 0; i < files.length; i++) {
-    console.log(i)
+    promises.push((files: (string | Blob | ArrayBuffer | ArrayBufferView)[]) => new Promise((resolve, reject) => {
+      let datetime = new Date();
+      exportFile(
+          'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv',
+          files[i]
+      );
+    }));
 
-    await download(files[i]);
-
-    // await new Promise(f => setTimeout(f, 5000));
   }
 
+  await runSequentialPromises([promises.map])
+      .then(resultAggregator => {
+
+      })
+      .catch(errResult => {
+        console.error(`Error encountered on job #${errResult.key}:`)
+        console.error(errResult.reason)
+        console.log('Managed to get these results before this error:')
+        console.log(errResult.resultAggregator)
+      })
+
 }
+
+function saveFile(file: string) {
+  let datetime = new Date();
+
+  exportFile(
+      'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv',
+      file
+  );
+
+
+  // const openFileFromSystem = async () => {
+  //
+  // try {
+  //   const [handle] = await window.showOpenFilePicker({
+  //     types: [{
+  //       description:'Markdown Files',
+  //       accept: { 'text/markdown': ['.md']}
+  //     }]
+  //   });
+  // }
+  // catch (e) {
+  //   console.log(e);
+  // }
+
+  // }
+  //
+  //
+  // const saveContent = async (handle, newContent) => {
+  //
+  // }
+}
+
 async function download(newCSV: string): Promise<void> {
   return new Promise((resolve) => {
     let datetime = new Date();
