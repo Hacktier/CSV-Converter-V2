@@ -75,30 +75,9 @@ async function writeNewCSV() {
     }));
   }
 
-
-  let promises = [];
-
   for (let i = 0; i < files.length; i++) {
-    promises.push((files: (string | Blob | ArrayBuffer | ArrayBufferView)[]) => new Promise((resolve, reject) => {
-      let datetime = new Date();
-      exportFile(
-          'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv',
-          files[i]
-      );
-    }));
-
+   saveFile(files[i])
   }
-
-  await runSequentialPromises([promises.map])
-      .then(resultAggregator => {
-
-      })
-      .catch(errResult => {
-        console.error(`Error encountered on job #${errResult.key}:`)
-        console.error(errResult.reason)
-        console.log('Managed to get these results before this error:')
-        console.log(errResult.resultAggregator)
-      })
 
 }
 
@@ -109,49 +88,6 @@ function saveFile(file: string) {
       'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv',
       file
   );
-
-
-  // const openFileFromSystem = async () => {
-  //
-  // try {
-  //   const [handle] = await window.showOpenFilePicker({
-  //     types: [{
-  //       description:'Markdown Files',
-  //       accept: { 'text/markdown': ['.md']}
-  //     }]
-  //   });
-  // }
-  // catch (e) {
-  //   console.log(e);
-  // }
-
-  // }
-  //
-  //
-  // const saveContent = async (handle, newContent) => {
-  //
-  // }
-}
-
-async function download(newCSV: string): Promise<void> {
-  return new Promise((resolve) => {
-    let datetime = new Date();
-    let filename = 'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv';
-    let element = document.createElement('a');
-
-    element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(newCSV));
-    element.setAttribute('download', filename);
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-    document.body.removeChild(element);
-
-    file.value = null;
-
-    return resolve();
-  })
 }
 
 function readCSV() {
