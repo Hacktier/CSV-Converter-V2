@@ -1,53 +1,75 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+    <!--    <q-header elevated>-->
+    <!--      <q-toolbar>-->
+    <!--        <q-btn style="width:30px"-->
+    <!--          flat-->
+    <!--          unelevated-->
+    <!--          icon="menu"-->
+    <!--          size="m"-->
+    <!--          aria-label="Menu"-->
+    <!--          @click="toggleLeftDrawer"-->
+    <!--        />-->
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+    <!--        <div>Quasar v{{ $q.version }}</div>-->
+    <!--      </q-toolbar>-->
+    <!--    </q-header>-->
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
+    <!--    <q-drawer-->
+    <!--      v-model="leftDrawerOpen"-->
+    <!--      bordered-->
+    <!--    >-->
+    <!--      <q-list>-->
+    <!--        <h2 class="m-2">Einstellungen</h2>-->
+    <!--      </q-list>-->
+    <!--    </q-drawer>-->
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
+
+    <q-btn class="position-absolute end-0 settingsButton"
+           flat
+           unelevated
+           icon="settings"
+           size="m"
+           aria-label="Menu"
+           @click="toggleDrawer"
+    />
+
+    <q-drawer class="position-absolute end-0"
+              v-model="DrawerOpen"
+              side="right"
+              elevated
+              bordered
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <h2 class="m-2">Einstellungen</h2>
+<!--        <q-btn style="width:30px" class="position-absolute top-0 end-0"-->
+<!--               flat-->
+<!--               unelevated-->
+<!--               icon="settings"-->
+<!--               size="m"-->
+<!--               aria-label="Menu"-->
+<!--               @click="toggleDrawer"-->
+<!--        />-->
       </q-list>
+      <footer class="row p-2">
+        <div class="col">
+          Version 2.0.0
+        </div>
+        <div class="col copyright">
+          &copy; Markus Kapp
+        </div>
+      </footer>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';
+import {ref} from 'vue';
+import EssentialLink, {EssentialLinkProps} from 'components/EssentialLink.vue';
 
 const essentialLinks: EssentialLinkProps[] = [
   {
@@ -94,9 +116,9 @@ const essentialLinks: EssentialLinkProps[] = [
   }
 ];
 
-const leftDrawerOpen = ref(false)
+const DrawerOpen = ref(false)
 
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+function toggleDrawer() {
+  DrawerOpen.value = !DrawerOpen.value
 }
 </script>
