@@ -22,6 +22,7 @@ function createWindow() {
       contextIsolation: true,
       // More info: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
+      sandbox: false
     },
   });
 
@@ -42,6 +43,7 @@ function createWindow() {
   });
 }
 
+app.commandLine.appendSwitch("enable-experimental-web-platform-features");
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
@@ -53,5 +55,8 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === undefined) {
     createWindow();
+
+    const a = require("@electron/remote");
+    console.log(a);
   }
 });

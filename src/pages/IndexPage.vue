@@ -13,6 +13,7 @@ import {ref} from 'vue'
 import Papa from 'papaparse'
 import {Member} from "src/Member";
 import {exportFile, runSequentialPromises} from "quasar";
+import {saveAs} from "file-saver";
 
 const fileInput = ref<HTMLInputElement>()
 const file = ref<File | null>()
@@ -32,7 +33,6 @@ async function convert() {
 
 
 async function writeNewCSV() {
-
 
   const data = members.map(member => ({
     /**
@@ -76,35 +76,63 @@ async function writeNewCSV() {
   }
 
 
-  let promises = [];
+  // let promises = [];
+
+  // urls.forEach(function (e) {
+  //   fetch(e.download)
+  //       .then(res => res.blob())
+  //       .then(blob => {
+  //         saveAs(blob, e.filename);
+  //       });
+  // });
+
+
+  const a = await window.showDirectoryPicker({id: 'blub'});
 
   for (let i = 0; i < files.length; i++) {
-    promises.push((files: (string | Blob | ArrayBuffer | ArrayBufferView)[]) => new Promise((resolve, reject) => {
-      let datetime = new Date();
-      exportFile(
-          'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv',
-          files[i]
-      );
-    }));
+    // promises.push((files: (string | Blob | ArrayBuffer | ArrayBufferView)[]) => new Promise((resolve, reject) => {
+    const b = await a.getFileHandle("bru_" + i + ".csv", { create: true });
+
+    console.log(b);
+
+    const writableStream = await b.createWritable();
+
+    // write our file
+    await writableStream.write(files[i]);
+
+    // close the file and write the contents to disk.
+    await writableStream.close();
+
+
+    console.log(a);
+
+    let datetime = new Date();
+    // saveAs(files[i], "blobi.txt");
+    // console.log("before");
+    //   exportFile(
+    //       'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv',
+    //       files[i]
+    //   );
+    //   console.log("after");
+    // }));
 
   }
 
-  await runSequentialPromises([promises.map])
-      .then(resultAggregator => {
-
-      })
-      .catch(errResult => {
-        console.error(`Error encountered on job #${errResult.key}:`)
-        console.error(errResult.reason)
-        console.log('Managed to get these results before this error:')
-        console.log(errResult.resultAggregator)
-      })
+  // await runSequentialPromises([promises.map])
+  //     .then(resultAggregator => {
+  //
+  //     })
+  //     .catch(errResult => {
+  //       console.error(`Error encountered on job #${errResult.key}:`)
+  //       console.error(errResult.reason)
+  //       console.log('Managed to get these results before this error:')
+  //       console.log(errResult.resultAggregator)
+  //     })
 
 }
 
 function saveFile(file: string) {
   let datetime = new Date();
-
   exportFile(
       'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv',
       file
