@@ -12,7 +12,7 @@
 import {ref} from 'vue'
 import Papa from 'papaparse'
 import {Member} from "src/Member";
-import {exportFile, runSequentialPromises} from "quasar";
+import {exportFile} from "quasar";
 import readXlsxFile from "read-excel-file";
 import {Cell} from "read-excel-file/types";
 
@@ -32,12 +32,10 @@ async function convert() {
   readXLSX();
 }
 
-
 async function writeNewCSV() {
+
   const data = members.map(member => ({
-
-
-      /**
+    /**
      * * DLRG Manager:        DLRG Seminare
      *  Frauen = 1          = 1
      *  Männer = 2          = 0
@@ -48,23 +46,22 @@ async function writeNewCSV() {
     'Vorname': member["firstname"],
     'Nachname': member["lastname"],
     'Geburtsdatum': member["birthDate"],
-    'Geschlecht': member["gender"] === '1' ? member["gender"] : '0',
+    'Geschlecht': member["gender"] == '1' ? member["gender"] : '0',
     'Strasse': member["street"],
     'PLZ': member["zipCode"],
     'Wohnort': member["city"],
     'E-Mail': member["email"],
     'Telefon privat': member["phoneNumber"],
     'Telefon mobil': member["phoneNumber"],
-    'Mitgliedschaft (EDVNummer)': '1321012',
+    'Mitgliedschaft (EDVNummer)': 1321012,
     'ID UVT': "",
     'Name Unternehmen': "",
     'PLZ Unternehmen': "",
     'Ort Unternehmen': "",
     'Strasse Unternehmen': "",
     'Mitgliedsnummer Unternehmen': ""
-  }));
 
-  console.log(data)
+  }));
 
   const fileCount = Math.ceil(data.length / 99);
   const files = [];
@@ -77,19 +74,15 @@ async function writeNewCSV() {
     }));
   }
 
+  const directoryHandle = await window.showDirectoryPicker({id: 'directoryPicker'});
+
   for (let i = 0; i < files.length; i++) {
-    saveFile(files[i])
+    const fileHandle = await directoryHandle.getFileHandle("import_" + i + ".csv", { create: true });
+    const writableStream = await fileHandle.createWritable();
+
+    await writableStream.write(files[i]);
+    await writableStream.close();
   }
-
-}
-
-function saveFile(file: string) {
-  let datetime = new Date();
-
-  exportFile(
-      'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv',
-      file
-  );
 }
 
 function readXLSX() {
@@ -98,7 +91,7 @@ function readXLSX() {
   }
 
   readXlsxFile(file.value).then(rows => {
-    rows.forEach((row : Cell[]) => {
+    rows.forEach((row: Cell[]) => {
       if (row[0] === 'Nummer') {
         return;
       }
