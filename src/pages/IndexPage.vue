@@ -34,17 +34,7 @@ async function convert() {
 
 
 async function writeNewCSV() {
-  console.log(members)
-
-  const data = members.map(member => {
-    try {
-      return {
-        'DLRG-Manager-Id': "",
-        // ... (Rest des Codes)
-      };
-    } catch (error) {
-      console.error("Error in mapping:", error)
-    };
+  const data = members.map(member => ({
 
 
       /**
@@ -53,26 +43,26 @@ async function writeNewCSV() {
      *  Männer = 2          = 0
      */
 
-    // 'DLRG-Manager-Id': "",
-    // 'Mitgliedsausweisnummer': "",
-    // 'Vorname': member["firstname"],
-    // 'Nachname': member["lastname"],
-    // 'Geburtsdatum': member["birthDate"],
-    // 'Geschlecht': member["gender"] === '1' ? member["gender"] : '0',
-    // 'Strasse': member["street"],
-    // 'PLZ': member["zipCode"],
-    // 'Wohnort': member["city"],
-    // 'E-Mail': member["email"],
-    // 'Telefon privat': member["phoneNumber"],
-    // 'Telefon mobil': member["phoneNumber"],
-    // 'Mitgliedschaft (EDVNummer)': '1321012',
-    // 'ID UVT': "",
-    // 'Name Unternehmen': "",
-    // 'PLZ Unternehmen': "",
-    // 'Ort Unternehmen': "",
-    // 'Strasse Unternehmen': "",
-    // 'Mitgliedsnummer Unternehmen': ""
-  });
+    'DLRG-Manager-Id': "",
+    'Mitgliedsausweisnummer': "",
+    'Vorname': member["firstname"],
+    'Nachname': member["lastname"],
+    'Geburtsdatum': member["birthDate"],
+    'Geschlecht': member["gender"] === '1' ? member["gender"] : '0',
+    'Strasse': member["street"],
+    'PLZ': member["zipCode"],
+    'Wohnort': member["city"],
+    'E-Mail': member["email"],
+    'Telefon privat': member["phoneNumber"],
+    'Telefon mobil': member["phoneNumber"],
+    'Mitgliedschaft (EDVNummer)': '1321012',
+    'ID UVT': "",
+    'Name Unternehmen': "",
+    'PLZ Unternehmen': "",
+    'Ort Unternehmen': "",
+    'Strasse Unternehmen': "",
+    'Mitgliedsnummer Unternehmen': ""
+  }));
 
   console.log(data)
 
@@ -104,7 +94,6 @@ function saveFile(file: string) {
 
 function readXLSX() {
   if (!file.value) {
-    console.log('Nop input');
     return;
   }
 
@@ -113,7 +102,6 @@ function readXLSX() {
       if (row[0] === 'Nummer') {
         return;
       }
-
 
       members.push({
         managerId: row[0] ? row[0].toString() : '',
@@ -130,9 +118,9 @@ function readXLSX() {
       });
 
     })
+    writeNewCSV();
   })
 
-  writeNewCSV();
 
 }
 
