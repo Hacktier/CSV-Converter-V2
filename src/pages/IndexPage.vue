@@ -33,9 +33,8 @@ async function convert() {
 }
 
 async function writeNewCSV() {
+
   const data = members.map(member => ({
-
-
     /**
      * * DLRG Manager:        DLRG Seminare
      *  Frauen = 1          = 1
@@ -47,27 +46,25 @@ async function writeNewCSV() {
     'Vorname': member["firstname"],
     'Nachname': member["lastname"],
     'Geburtsdatum': member["birthDate"],
-    'Geschlecht': member["gender"] === '1' ? member["gender"] : '0',
+    'Geschlecht': member["gender"] == '1' ? member["gender"] : '0',
     'Strasse': member["street"],
     'PLZ': member["zipCode"],
     'Wohnort': member["city"],
     'E-Mail': member["email"],
     'Telefon privat': member["phoneNumber"],
     'Telefon mobil': member["phoneNumber"],
-    'Mitgliedschaft (EDVNummer)': '1321012',
+    'Mitgliedschaft (EDVNummer)': 1321012,
     'ID UVT': "",
     'Name Unternehmen': "",
     'PLZ Unternehmen': "",
     'Ort Unternehmen': "",
     'Strasse Unternehmen': "",
     'Mitgliedsnummer Unternehmen': ""
-  }));
 
-  console.log(data)
+  }));
 
   const fileCount = Math.ceil(data.length / 99);
   const files = [];
-  let datetime = new Date();
 
   for (let i = 0; i < fileCount; i++) {
     const chunk = data.slice(i * 99, (i + 1) * 99)
@@ -77,19 +74,14 @@ async function writeNewCSV() {
     }));
   }
 
-  const a = await window.showDirectoryPicker({id: 'directoryPicker'});
+  const directoryHandle = await window.showDirectoryPicker({id: 'directoryPicker'});
 
   for (let i = 0; i < files.length; i++) {
-    const b = await a.getFileHandle(
-        'import ' + datetime.toLocaleDateString() + '_' + datetime.toLocaleTimeString('id') + '.csv',
-        {create: true}
-    );
-
-    const writableStream = await b.createWritable();
+    const fileHandle = await directoryHandle.getFileHandle("import_" + i + ".csv", { create: true });
+    const writableStream = await fileHandle.createWritable();
 
     await writableStream.write(files[i]);
     await writableStream.close();
-
   }
 }
 
