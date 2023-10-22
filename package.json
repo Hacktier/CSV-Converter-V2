@@ -17,6 +17,7 @@
     "node-polyfill-webpack-plugin": "^2.0.1",
     "papaparse": "^5.4.1",
     "quasar": "^2.6.0",
+    "read-excel-file": "^5.7.1",
     "vue": "^3.3.4",
     "vue-router": "^4.0.0"
   },
