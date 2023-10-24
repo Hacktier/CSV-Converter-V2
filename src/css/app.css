@@ -9,9 +9,9 @@
 
 footer {
   position: absolute;
+  display: flex;
   bottom: 0;
-  left: 0;
-  right: 0;
+  width: 100%;
   background-color: rgb(227, 6, 19);
   color: rgb(253, 235, 30);
 }
