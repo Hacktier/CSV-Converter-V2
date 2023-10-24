@@ -1,37 +1,37 @@
 .fullscreen {
-  width: 100%;
+    width: 100%;
 }
 
 .settingsButton {
-  width: 30px;
-  z-index: 3001
+    width: 30px;
+    z-index: 3001
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgb(227, 6, 19);
-  color: rgb(253, 235, 30);
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(227, 6, 19);
+    color: rgb(253, 235, 30);
 }
 
 .copyright {
-  color: rgb(253, 235, 30);
-  text-decoration: none;
-  position: absolute;
-  right: 5px;
+    color: rgb(253, 235, 30);
+    text-decoration: none;
+    position: absolute;
+    right: 5px;
 }
 
 .scaleInput {
-  width: auto !important;
+    width: auto !important;
 }
 
 .center {
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  display: flex;
-  justify-content: center;
-  justify-items: center
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    justify-items: center
 }

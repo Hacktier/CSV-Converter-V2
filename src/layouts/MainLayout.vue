@@ -37,21 +37,13 @@
                  aria-describedby="inputGroup-sizing-default">
         </div>
         <div class="float-end">
-          <button class="mt-4 btn btn-primary" @click="save">
+          <button class="mt-4 btn btn-primary" @click="save" id="liveToastBtn">
             Speichern
           </button>
         </div>
-
-
-        <footer class="row">
-          <div class="col ms-4 p-0">Version 2.0.0</div>
-          <div class="col copyright p-0 me-4">&copy; Markus Kapp</div>
-        </footer>
       </q-list>
-      <footer class="row p-2">
-        <div class="col">
-          Version 2.0.0
-        </div>
+      <footer class="p-2">
+        <div class="">Version 2.0.0</div>
         <a href="https://github.com/Hacktier" target="_blank" class="col copyright">
           &copy; Markus Kapp
         </a>
@@ -66,14 +58,20 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
+import { useQuasar } from 'quasar'
 
+const $q = useQuasar();
 const managerID = ref<boolean>(true);
 const clubNumber = ref<number>(1321012);
 const DrawerOpen = ref(false);
 
 function save() {
-  localStorage.setItem("managerID", JSON.stringify(managerID.value));
-  localStorage.setItem("clubNumber", JSON.stringify(clubNumber.value));
+  alert("Gespeichert!")
+  // localStorage.setItem("managerID", JSON.stringify(managerID.value));
+  // localStorage.setItem("clubNumber", JSON.stringify(clubNumber.value));
+
+  $q.localStorage.set("managerID", managerID.value);
+  $q.localStorage.set("clubNumber", clubNumber.value);
 }
 
 function toggleDrawer() {

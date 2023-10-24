@@ -12,9 +12,9 @@
 import {ref} from 'vue'
 import Papa from 'papaparse'
 import {Member} from "src/Member";
-import {exportFile} from "quasar";
 import readXlsxFile from "read-excel-file";
 import {Cell} from "read-excel-file/types";
+import { useQuasar } from 'quasar'
 
 const fileInput = ref<HTMLInputElement>()
 const file = ref<File | null>()
@@ -25,17 +25,24 @@ function handleFileChange() {
 }
 
 async function convert() {
-  if (!file.value) {
-    return
-  }
+  // if (!file.value) {
+  //   return
+  // }
 
 
-  readXLSX();
+  writeNewCSV()
+  // readXLSX();
 }
 
 async function writeNewCSV() {
-  const writeManagerID = localStorage.getItem('managerID');
-  const clubNumber = localStorage.getItem('clubNumber');
+  const $q = useQuasar();
+  // const writeManagerID = localStorage.getItem('managerID');
+  // const clubNumber = localStorage.getItem('clubNumber');
+
+  // const writeManagerID = $q.localStorage;
+
+  console.log(useQuasar())
+  return
 
   const data = members.map(member => ({
     /**
@@ -56,7 +63,7 @@ async function writeNewCSV() {
     'E-Mail': member["email"],
     'Telefon privat': member["phoneNumber"],
     'Telefon mobil': member["phoneNumber"],
-    'Mitgliedschaft (EDVNummer)': clubNumber ? clubNumber : '',
+    'Mitgliedschaft (EDVNummer)': clubNumber ? JSON.parse(clubNumber) : '',
     'ID UVT': "",
     'Name Unternehmen': "",
     'PLZ Unternehmen': "",
