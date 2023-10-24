@@ -12,7 +12,7 @@ function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, 'icons/logo.png'), // tray icon
+    icon: path.resolve(__dirname, 'icons/csv-logo.png'), // tray icon
     width: 800,
     height: 500,
     useContentSize: true,
