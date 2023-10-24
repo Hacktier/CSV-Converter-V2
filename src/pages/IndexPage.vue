@@ -1,8 +1,8 @@
 <template>
-  <div class="fileInput position-absolute top-50 start-50 translate-middle row">
-    <input class="form-control col-9" ref="fileInput" type="file" @change="handleFileChange" id="input"/>
-    <div class="col-3">
-      <button class="btn btn-primary  ms-2" @click="convert">Convert</button>
+  <div class="center">
+    <input class="form-control scaleInput" ref="fileInput" type="file" @change="handleFileChange" id="input"/>
+    <div>
+      <button class="btn btn-primary ms-2" @click="convert">Convert</button>
     </div>
   </div>
 </template>
