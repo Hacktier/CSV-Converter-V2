@@ -18,6 +18,9 @@ footer {
   color: rgb(253, 235, 30);
 }
 .copyright{
+  color: rgb(253, 235, 30);
+  text-decoration: none;
   position: absolute;
-  right: 0;
+  right: 5px;
 }
+

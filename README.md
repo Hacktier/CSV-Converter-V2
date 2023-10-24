@@ -19,6 +19,7 @@ quasar dev
 quasar dev -m electron
 ```
 
+
 ### Build the app for production
 ```bash
 quasar build
