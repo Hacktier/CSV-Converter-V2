@@ -1,8 +1,10 @@
 <template>
-  <div class="fileInput position-absolute top-50 start-50 translate-middle row">
-    <input class="form-control col-9" ref="fileInput" type="file" @change="handleFileChange" id="input"/>
-    <div class="col-3">
-      <button class="btn btn-primary  ms-2" @click="convert">Convert</button>
+  <div class="center">
+    <div class="input-wrapper">
+      <input class="form-control scaleInput" ref="fileInput" type="file" @change="handleFileChange" id="input"/>
+      <div>
+        <button class="btn btn-primary ms-2" @click="convert">Convert</button>
+      </div>
     </div>
   </div>
 </template>
@@ -29,10 +31,13 @@ async function convert() {
     return
   }
 
+
   readXLSX();
 }
 
 async function writeNewCSV() {
+  const writeManagerID = localStorage.getItem('managerID');
+  const clubNumber = localStorage.getItem('clubNumber');
 
   const data = members.map(member => ({
     /**
@@ -42,7 +47,7 @@ async function writeNewCSV() {
      */
 
     'DLRG-Manager-Id': "",
-    'Mitgliedsausweisnummer': "",
+    'Mitgliedsausweisnummer': writeManagerID ? member['managerId'] : '',
     'Vorname': member["firstname"],
     'Nachname': member["lastname"],
     'Geburtsdatum': member["birthDate"],
@@ -53,7 +58,7 @@ async function writeNewCSV() {
     'E-Mail': member["email"],
     'Telefon privat': member["phoneNumber"],
     'Telefon mobil': member["phoneNumber"],
-    'Mitgliedschaft (EDVNummer)': 1321012,
+    'Mitgliedschaft (EDVNummer)': clubNumber ? clubNumber : '',
     'ID UVT': "",
     'Name Unternehmen': "",
     'PLZ Unternehmen': "",
@@ -77,7 +82,7 @@ async function writeNewCSV() {
   const directoryHandle = await window.showDirectoryPicker({id: 'directoryPicker'});
 
   for (let i = 0; i < files.length; i++) {
-    const fileHandle = await directoryHandle.getFileHandle("import_" + i + ".csv", { create: true });
+    const fileHandle = await directoryHandle.getFileHandle("import_" + i + ".csv", {create: true});
     const writableStream = await fileHandle.createWritable();
 
     await writableStream.write(files[i]);
