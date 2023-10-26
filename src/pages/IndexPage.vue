@@ -1,8 +1,10 @@
 <template>
   <div class="center">
-    <input class="form-control scaleInput" ref="fileInput" type="file" @change="handleFileChange" id="input"/>
-    <div>
-      <button class="btn btn-primary ms-2" @click="convert">Convert</button>
+    <div class="input-wrapper">
+      <input class="form-control scaleInput" ref="fileInput" type="file" @change="handleFileChange" id="input"/>
+      <div>
+        <button class="btn btn-primary ms-2" @click="convert">Convert</button>
+      </div>
     </div>
   </div>
 </template>
