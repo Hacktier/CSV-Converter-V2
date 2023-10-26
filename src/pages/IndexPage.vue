@@ -14,7 +14,6 @@
 import {ref} from 'vue'
 import Papa from 'papaparse'
 import {Member} from "src/Member";
-import {exportFile} from "quasar";
 import readXlsxFile from "read-excel-file";
 import {Cell} from "read-excel-file/types";
 
