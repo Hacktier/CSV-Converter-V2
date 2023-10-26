@@ -8,6 +8,7 @@ export type Member = {
   zipCode: string;
   city: string;
   email: string;
-  phoneNumber: string;
-  phoneNumberExtra: string;
+  phoneNumber1: string;
+  phoneNumber2: string;
+  phoneNumber3: string;
 }

@@ -12,9 +12,7 @@
 import {ref} from 'vue'
 import Papa from 'papaparse'
 import {Member} from "src/Member";
-import {exportFile} from "quasar";
 import readXlsxFile from "read-excel-file";
-import {Cell} from "read-excel-file/types";
 
 const fileInput = ref<HTMLInputElement>()
 const file = ref<File | null>()
@@ -39,23 +37,23 @@ async function writeNewCSV() {
 
   const data = members.map(member => ({
     /**
-     * * DLRG Manager:        DLRG Seminare
-     *  Frauen = 1          = 1
-     *  Männer = 2          = 0
+     * * DLRG Manager:              DLRG Seminare
+     *  Frauen = 1 / neu: Frau       = 1
+     *  Männer = 2 / neu: Herr       = 0
      */
 
-    'DLRG-Manager-Id': "",
-    'Mitgliedsausweisnummer': writeManagerID ? member['managerId'] : '',
+    'DLRG-Manager-Id': writeManagerID ? member['managerId'] : '',
+    'Mitgliedsausweisnummer': '',
     'Vorname': member["firstname"],
     'Nachname': member["lastname"],
     'Geburtsdatum': member["birthDate"],
-    'Geschlecht': member["gender"] == '1' ? member["gender"] : '0',
+    'Geschlecht': member["gender"] == 'Herr' ? '0' : '1',
     'Strasse': member["street"],
     'PLZ': member["zipCode"],
     'Wohnort': member["city"],
     'E-Mail': member["email"],
-    'Telefon privat': member["phoneNumber"],
-    'Telefon mobil': member["phoneNumber"],
+    'Telefon privat': member["phoneNumber1"],
+    'Telefon mobil': member["phoneNumber3"] ? member["phoneNumber3"] : member["phoneNumber2"],
     'Mitgliedschaft (EDVNummer)': clubNumber ? clubNumber : '',
     'ID UVT': "",
     'Name Unternehmen': "",
@@ -80,12 +78,14 @@ async function writeNewCSV() {
   const directoryHandle = await window.showDirectoryPicker({id: 'directoryPicker'});
 
   for (let i = 0; i < files.length; i++) {
-    const fileHandle = await directoryHandle.getFileHandle("import_" + i + ".csv", { create: true });
+    const fileHandle = await directoryHandle.getFileHandle("import_" + i + ".csv", {create: true});
     const writableStream = await fileHandle.createWritable();
 
     await writableStream.write(files[i]);
     await writableStream.close();
   }
+  alert('Gespeichert!');
+  members = []
 }
 
 function readXLSX() {
@@ -93,27 +93,40 @@ function readXLSX() {
     return;
   }
 
-  readXlsxFile(file.value).then(rows => {
-    rows.forEach((row: Cell[]) => {
-      if (row[0] === 'Nummer') {
-        return;
-      }
+  const map = {
+    'Nr': 'number',
+    'Anrede': 'salutation',
+    'Vorname': 'firstname',
+    'Nachname': 'lastName',
+    'Strasse': 'street',
+    'PLZ': 'zipcode',
+    'Ort': 'city',
+    'Telefon1': 'phone1',
+    'Telefon2': 'phone2',
+    'Mobil': 'phone3',
+    'Email': 'email',
+    'Geburtsdatum': 'birthDate',
 
+  }
+
+  readXlsxFile(file.value, {map}).then(file => {
+    file.rows.forEach((row: object, index: number, all: object[]) => {
       members.push({
-        managerId: row[0] ? row[0].toString() : '',
-        firstname: row[2] ? row[2].toString() : '',
-        lastname: row[3] ? row[3].toString() : '',
-        birthDate: row[9] ? row[9].toString() : '',
-        gender: row[1] ? row[1].toString() : '',
-        street: row[4] ? row[4].toString() : '',
-        zipCode: row[5] ? row[5].toString() : '',
-        city: row[6] ? row[6].toString() : '',
-        email: row[11] ? row[11].toString() : '',
-        phoneNumber: row[7] ? row[7].toString() : '',
-        phoneNumberExtra: row[8] ? row[8].toString() : '',
+        managerId: row['number'],
+        firstname: row['firstname'],
+        lastname: row['lastName'],
+        birthDate: row['birthDate'],
+        gender: row['salutation'],
+        street: row['street'],
+        zipCode: row['zipcode'],
+        city: row['city'],
+        email: row['email'],
+        phoneNumber1: row['phone1'],
+        phoneNumber2: row['phone2'],
+        phoneNumber3: row['phone3'],
       });
+    });
 
-    })
     writeNewCSV();
   })
 
