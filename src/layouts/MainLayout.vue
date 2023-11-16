@@ -40,6 +40,9 @@
           <button class="mt-4 btn btn-primary" @click="save" id="liveToastBtn">
             Speichern
           </button>
+          <button class="mt-4 btn btn-primary" @click="read" id="liveToastBtn">
+            Lesen
+          </button>
         </div>
       </q-list>
       <footer class="p-2">
@@ -58,20 +61,25 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
-import { useQuasar } from 'quasar'
+import { useStore } from 'vuex';
 
-const $q = useQuasar();
 const managerID = ref<boolean>(true);
 const clubNumber = ref<number>(1321012);
 const DrawerOpen = ref(false);
+const store = useStore();
 
 function save() {
+  store.commit('setClubNumber', clubNumber.value);
+
   alert("Gespeichert!")
-  localStorage.setItem("managerID", JSON.stringify(managerID.value));
-  localStorage.setItem("clubNumber", JSON.stringify(clubNumber.value));
+}
+
+function read() {
+  alert(store.state.clubNumber);
 }
 
 function toggleDrawer() {
   DrawerOpen.value = !DrawerOpen.value;
 }
+
 </script>
