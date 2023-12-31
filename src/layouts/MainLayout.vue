@@ -27,7 +27,7 @@
             <input v-model="managerID" :value=true type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
             <label class="btn btn-outline-primary" for="btnradio1">an</label>
 
-            <input v-model="managerID" type="radio"  :value=false class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+            <input v-model="managerID" type="radio" :value=false class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
             <label class="btn btn-outline-primary" for="btnradio2">aus</label>
           </div>
         </div>
@@ -39,9 +39,6 @@
         <div class="float-end">
           <button class="mt-4 btn btn-primary" @click="save" id="liveToastBtn">
             Speichern
-          </button>
-          <button class="mt-4 btn btn-primary" @click="read" id="liveToastBtn">
-            Lesen
           </button>
         </div>
       </q-list>
@@ -63,19 +60,20 @@
 import {ref} from 'vue';
 import { useStore } from 'vuex';
 
-const managerID = ref<boolean>(true);
-const clubNumber = ref<number>(1321012);
-const DrawerOpen = ref(false);
 const store = useStore();
+const DrawerOpen = ref(false);
+const managerID = ref<boolean>(store.state.managerID ?? true);
+const clubNumber = ref<number>(
+  store.state.clubNumber !== undefined && store.state.clubNumber !== null && store.state.clubNumber !== ''
+    ? Number(store.state.clubNumber)
+    : 1321012
+);
 
 function save() {
   store.commit('setClubNumber', clubNumber.value);
+  store.commit('setManagerID', managerID.value);
 
   alert("Gespeichert!")
-}
-
-function read() {
-  alert(store.state.clubNumber);
 }
 
 function toggleDrawer() {
