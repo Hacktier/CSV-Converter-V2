@@ -15,6 +15,7 @@ import {ref} from 'vue'
 import Papa from 'papaparse'
 import {Member} from "src/Member";
 import readXlsxFile from "read-excel-file";
+import dayjs from 'dayjs';
 
 const fileInput = ref<HTMLInputElement>()
 const file = ref<File | null>()
@@ -24,7 +25,7 @@ function handleFileChange() {
   file.value = fileInput.value?.files?.item(0)
 }
 
-async function convert() {
+async function convert(): Promise<void> {
   if (!file.value) {
     return
   }
@@ -33,7 +34,7 @@ async function convert() {
   readXLSX();
 }
 
-async function writeNewCSV() {
+async function writeNewCSV(): Promise<void> {
   const writeManagerID = localStorage.getItem('managerID');
   const clubNumber = localStorage.getItem('clubNumber');
 
@@ -48,7 +49,7 @@ async function writeNewCSV() {
     'Mitgliedsausweisnummer': '',
     'Vorname': member["firstname"],
     'Nachname': member["lastname"],
-    'Geburtsdatum': member["birthDate"],
+    'Geburtsdatum': dayjs(member['birthDate']).format('DD.MM.YYYY').toString(),
     'Geschlecht': member["gender"] == 'Herr' ? '0' : '1',
     'Strasse': member["street"],
     'PLZ': member["zipCode"],
